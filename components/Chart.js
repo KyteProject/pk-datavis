@@ -15,6 +15,13 @@ const Chart = () => {
 		setData( generateData() );
 	};
 
+	useEffect(
+		() => {
+			setData( generateData() );
+		},
+		[ !data ]
+	);
+
 	return (
 		<div className='App'>
 			<div>

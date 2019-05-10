@@ -26,7 +26,8 @@
 		"d3": "^5.9.2",
 		"next": "^8.1.0",
 		"react": "^16.8.6",
-		"react-dom": "^16.8.6"
+		"react-dom": "^16.8.6",
+		"react-spring": "^8.0.20"
 	},
 	"devDependencies": {
 		"babel-eslint": "^10.0.1",
