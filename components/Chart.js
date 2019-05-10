@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as d3 from 'd3';
+import PieChart from './PieChart';
 
 const Chart = () => {
 	const generateData = ( value, length = 5 ) =>
@@ -21,6 +22,7 @@ const Chart = () => {
 			</div>
 			<div>
 				<span className='label'>Chart</span>
+				<PieChart data={data} width={200} height={200} innerRadius={60} outerRadius={100} />
 			</div>
 		</div>
 	);
