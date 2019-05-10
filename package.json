@@ -1,0 +1,41 @@
+{
+	"name": "create-next-example-app",
+	"author": "Daniel Smith <daniel.smith@ukemi.ninja>",
+	"description": "...",
+	"version": "1.0.0",
+	"enviroment": "web",
+	"homepage": "https://github.com/KyteProject/pk-event-vis",
+	"keywords": [
+		"d3",
+		"next",
+		"javascript",
+		"react",
+		"parkour",
+		"event",
+		"ukemi"
+	],
+	"repository": "https://github.com/KyteProject/pk-event-vis",
+	"license": "MIT",
+	"main": "index.js",
+	"scripts": {
+		"dev": "next",
+		"build": "next build",
+		"start": "next start"
+	},
+	"dependencies": {
+		"d3": "^5.9.2",
+		"next": "^8.1.0",
+		"react": "^16.8.6",
+		"react-dom": "^16.8.6"
+	},
+	"devDependencies": {
+		"babel-eslint": "^10.0.1",
+		"eslint": "^5.16.0",
+		"eslint-config-xo": "^0.26.0",
+		"eslint-config-xo-nextjs": "^1.4.0",
+		"eslint-plugin-import": "^2.17.2",
+		"eslint-plugin-jsx-a11y": "^6.2.1",
+		"eslint-plugin-react": "^7.13.0",
+		"eslint-plugin-react-hooks": "^1.6.0"
+	}
+}
