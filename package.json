@@ -23,11 +23,16 @@
 		"start": "next start"
 	},
 	"dependencies": {
+		"@zeit/next-css": "^1.0.1",
 		"d3": "^5.9.2",
+		"datamaps": "^0.5.9",
 		"next": "^8.1.0",
+		"rc-slider": "^8.6.9",
+		"rc-tooltip": "^3.7.3",
 		"react": "^16.8.6",
 		"react-dom": "^16.8.6",
-		"react-spring": "^8.0.20"
+		"react-spring": "^8.0.20",
+		"topojson": "^3.0.2"
 	},
 	"devDependencies": {
 		"babel-eslint": "^10.0.1",

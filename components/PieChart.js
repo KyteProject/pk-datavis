@@ -1,79 +1,54 @@
 import React, { useEffect, useRef } from 'react';
-import { animated, useSpring } from 'react-spring';
 import * as d3 from 'd3';
 
-const colors = d3.scaleOrdinal( d3.schemeCategory10 );
-const format = d3.format( '.2f' );
-const animationDuration = 250;
-const animationConfig = {
-	to: async( next ) => {
-		await next( { t: 1 } );
-	},
-	from: { t: 0 },
-	config: { duration: animationDuration },
-	reset: true
-};
-
-const Arc = ( { index, from, to, createArc, animatedProps } ) => {
-	const interpolator = d3.interpolate( from, to );
-
-	return (
-		<g key={index} className='arc'>
-			<animated.path
-				className='arc'
-				d={animatedProps.t.interpolate( ( t ) => createArc( interpolator( t ) ) )}
-				fill={colors( index )}
-			/>
-			<animated.text
-				transform={animatedProps.t.interpolate( ( t ) => `translate(${createArc.centroid( interpolator( t ) )})` )}
-				textAnchor='middle'
-				alignmentBaseline='middle'
-				fill='white'
-				fontSize='10'
-			>
-				{animatedProps.t.interpolate( ( t ) => format( interpolator( t ).value ) )}
-			</animated.text>
-		</g>
-	);
-};
-
 const Pie = ( props ) => {
-	const cache = useRef( [] );
-	const createPie = d3
-		.pie()
-		.value( ( d ) => d.value )
-		.sort( null );
-	const createArc = d3
-		.arc()
-		.innerRadius( props.innerRadius )
-		.outerRadius( props.outerRadius );
-	const data = createPie( props.data );
-	const previousData = createPie( cache.current );
+	const ref = useRef( null ),
+		format = d3.format( '.2f' ),
+		colours = d3.scaleOrdinal( d3.schemeCategory10 ),
+		createPie = d3
+			.pie()
+			.value( ( d ) => d.value )
+			.sort( null ),
+		createArc = d3
+			.arc()
+			.innerRadius( props.innerRadius )
+			.outerRadius( props.outerRadius );
 
-	const [ animatedProps, setAnimatedProps ] = useSpring( () => animationConfig );
+	useEffect(
+		() => {
+			const data = createPie( props.data ),
+				group = d3.select( ref.current ),
+				groupWithData = group.selectAll( 'g.arc' ).data( data );
 
-	setAnimatedProps( animationConfig );
+			groupWithData.exit().remove();
 
-	useEffect( () => {
-		cache.current = props.data;
-	} );
+			const groupWithUpdate = groupWithData
+				.enter()
+				.append( 'g' )
+				.attr( 'class', 'arc' );
+
+			const path = groupWithUpdate.append( 'path' ).merge( groupWithData.select( 'path.arc' ) ),
+				text = groupWithUpdate.append( 'text' ).merge( groupWithData.select( 'text' ) );
+
+			path
+				.attr( 'class', 'arc' )
+				.attr( 'd', createArc )
+				.attr( 'fill', ( d, i ) => colours( i ) );
+
+			text
+				.attr( 'text-anchor', 'middle' )
+				.attr( 'alignment-baseline', 'middle' )
+				.attr( 'transform', ( d ) => `translate(${createArc.centroid( d )})` )
+				.style( 'fill', 'white' )
+				.style( 'font-size', 10 )
+				.text( ( d ) => format( d.value ) );
+		},
+		[ colours, createArc, createPie, format, props.data ]
+	);
 
 	return (
 		<svg width={props.width} height={props.height}>
-			<g transform={`translate(${props.outerRadius} ${props.outerRadius})`}>
-				{data.map( ( d, i ) => (
-					<Arc
-						key={i}
-						index={i}
-						from={previousData[ i ]}
-						to={d}
-						createArc={createArc}
-						colors={colors}
-						format={format}
-						animatedProps={animatedProps}
-					/>
-				) )}
-			</g>
+			<g ref={ref} transform={`translate(${props.outerRadius} ${props.outerRadius})`} />
 		</svg>
 	);
 };
